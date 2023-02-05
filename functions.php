@@ -91,6 +91,9 @@ function generate_certificate($cert_data,$input_data){
       $pdf->SetFont('Helvetica', '', $general_font_size);
       // Event Date
       $pdf->Cell(0, 8, $value[2], 0, 2, 'C', 0, '', 0);
+      if (!file_exists($path.'/certificate/')) {
+        mkdir($path.'/certificate/', 0777, true);
+      }
       $pdf_file_path = $path.'/certificate/'.$value[0].'-'.date('ymdHis').'.pdf';
       $pdf_file_name = basename($pdf_file_path);
       $pdf->Output($pdf_file_path,'F');
@@ -106,7 +109,6 @@ function generate_certificate($cert_data,$input_data){
           $input_data['email_body'] = str_replace("{{variable2}}", $value[1], $input_data['email_body']);
           $input_data['email_body'] = str_replace("{{variable3}}", $value[2], $input_data['email_body']);
           $msg = htmlspecialchars_decode($input_data['email_body']);
-          // print_r($input_data['email_body']);
         }
         else{
           // Default MSG        
@@ -154,12 +156,11 @@ function send_mail($to,$sub,$msg,$headers,$attachment){
   return wp_mail($to,$sub,$msg,$headers,$attachment);
 }
 
-// Clear Data
+// Clear Data function. This will be called via AJAX call
 function cleardata(){
-  echo "Clearing Data<br>";
+  echo "Clearing Data of certificates and generated PDFs";
   $path = dirname(__FILE__);
   // Clearing Certificate data
-  echo "Clearing Cert<br>";
   $files = glob($path.'/data/*'); // get all file names
   foreach($files as $file){ // iterate files
     if(is_file($file)) {
@@ -167,12 +168,13 @@ function cleardata(){
     }
   }
   // Clearing PDFs
-  echo "Clearing PDFs<br>";
   $files = glob($path.'/certificate/*'); // get all file names
   foreach($files as $file){ // iterate files
     if(is_file($file)) {
       unlink($file); // delete file
     }
   }
+  wp_die();
 }
-// add_action('clear_all_data','read_data','',2);
+add_action('wp_ajax_cleardata', 'cleardata');
+add_action('wp_ajax_nopriv_cleardata', 'cleardata');

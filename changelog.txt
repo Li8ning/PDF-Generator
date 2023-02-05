@@ -1,0 +1,10 @@
+Version 1.1
+- Fix for Event title getting out of pdf
+
+Version 1.2
+- Added: New option to customize font size of Event Title, Attendee Name, General Font
+- Improvements: Form Fields validation
+- Improvements: Design Improvement
+
+Version 1.2.1
+- Added: New option to customize email body

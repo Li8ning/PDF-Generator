@@ -8,3 +8,6 @@ Version 1.2
 
 Version 1.2.1
 - Added: New option to customize email body
+
+Version 1.2.2
+- Tweaked: Implemented Ajax call on flush button to clear out generated certificates and data

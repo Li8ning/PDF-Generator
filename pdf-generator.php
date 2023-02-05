@@ -8,7 +8,7 @@ Plugin URI:   https://anandavak.com
 
 Description:  Generate PDF from CSV files 
 
-Version:      1.2.1
+Version:      1.2.2
 
 Author:       Speed 
 

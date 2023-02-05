@@ -26,4 +26,4 @@
 </ul>
 
 <h2>Version</h2>
-<p>The current version of PDF Generator is 1.2.1.</p>
+<p>The current version of PDF Generator is 1.2.2.</p>

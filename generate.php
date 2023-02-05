@@ -2,7 +2,7 @@
 
 $content = '
 <style>
-.upload-wrapper,.delete_data{margin-bottom:10px;}
+.upload-wrapper,#delete_data_btn{margin-bottom:10px;}
 fieldset{
     display: block;
     margin-inline-start: 2px;
@@ -32,8 +32,8 @@ fieldset legend{
 }
 </style>
 <h1>Generate PDF</h1>
+<button name="clearData" id="delete_data_btn">Flush the PDF Generator\'s Cache</button>
 <form method="POST" action="" enctype="multipart/form-data">
-    <button type="submit" name="clearData" value="Delete" class="delete_data">Flush the PDF Generator\'s Cache</button>
     <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong></p>
     <fieldset>
         <legend>Sender\'s Configurations</legend>
@@ -97,6 +97,9 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload & Send Emails')
         $allowedfileExtensions = array('csv');
         if (in_array($fileExtension, $allowedfileExtensions)) {
             // directory in which the uploaded file will be moved
+            if (!file_exists(plugin_dir_path(__FILE__).'data/')) {
+                mkdir(plugin_dir_path(__FILE__).'data/', 0777, true);
+            }
             $uploadFileDir = plugin_dir_path(__FILE__).'data/';
             $dest_path = $uploadFileDir . $newFileName;
             
@@ -124,7 +127,4 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload & Send Emails')
             exit();
         }
     }
-}
-elseif(isset($_POST['clearData']) && $_POST['clearData'] == 'Delete'){
-    cleardata();
 }

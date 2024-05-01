@@ -147,7 +147,7 @@ function generate_certificate($cert_data,$input_data){
           echo 'Mail sent successfully<br>';
         } 
       }
-      echo $value[0].' PDF Generated -> <a href="'.get_site_url().'/wp-content/plugins/PDF Generator - AV Sols/certificate/'.$pdf_file_name.'" target="_blank">Open</a><br><br>';
+      echo $value[0] . ' PDF Generated -> <a href="' . plugin_dir_url( __FILE__ ) . 'certificate/' . $pdf_file_name . '" target="_blank">Open</a><br><br>';
     }
   }
 }

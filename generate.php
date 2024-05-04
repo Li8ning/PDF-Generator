@@ -113,7 +113,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload & Send Emails')
                 $input_data['general_font_size'] = $_POST['general_font_size'];
                 $input_data['attendee_font_size'] = $_POST['attendee_font_size'];
                 $input_data['event_title_font_size'] = $_POST['event_title_font_size'];
-                $input_data['email_body'] = htmlspecialchars($_POST['email_body']);
+                $input_data['email_body'] = htmlspecialchars(str_replace('\\"', '"', $_POST['email_body']));
                 do_action(read_data($dest_path,$input_data));
                 exit();
             }

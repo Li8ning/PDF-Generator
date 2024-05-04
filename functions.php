@@ -98,7 +98,7 @@ function generate_certificate($cert_data,$input_data){
       $pdf_file_name = basename($pdf_file_path);
       $pdf->Output($pdf_file_path,'F');
       if (file_exists($pdf_file_path)) {
-        echo 'File Exists.<br>Sendind Mail.<br>';
+        echo 'File Exists.<br>Sending Mail.<br>';
         // Email Details
         $to = $value[3];
         $sub = 'Certificate of Attendance for '.$value[0];

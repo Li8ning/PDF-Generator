@@ -4,7 +4,7 @@
 
 Plugin Name:  PDF Generator
 
-Plugin URI:   https://anandavak.com 
+Plugin URI:   https://github.com/Li8ning/PDF-Generator/ 
 
 Description:  Generate PDF from CSV files 
 
@@ -12,7 +12,7 @@ Version:      1.2.2
 
 Author:       Speed 
 
-Author URI:   https://anandavak.com
+Author URI:   https://dharmrajsinhjadeja.com
 
 License:      GPL2
 

@@ -57,6 +57,14 @@ fieldset legend{
             <input type="text" id="bg_image" name="bg_image" required>
         </div>
         <div class="upload-wrapper">
+            <label for="start_sub_line">Start Line Text (Printed above attendee name) [Limit: 50 Characters]</label>
+            <input type="text" id="start_sub_line" name="start_sub_line" maxlength="50" value="This is to recognize">
+        </div>
+        <div class="upload-wrapper">
+            <label for="second_sub_line">Sub Line Text (Printed below attendee name) [Limit: 50 Characters]</label>
+            <input type="text" id="second_sub_line" name="second_sub_line" maxlength="50" value="For attending the webinar on">
+        </div>
+        <div class="upload-wrapper">
             <label for="general_font_size">General Font Size [Default: 14px]</label>
             <input type="number" id="general_font_size" name="general_font_size" min="1" max="20" step="1">
         </div>
@@ -84,47 +92,45 @@ fieldset legend{
 </form>';
 echo $content;
 
-if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload & Send Emails') {
-    if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
-        // get details of the uploaded file
-        $fileTmpPath = $_FILES['uploadedFile']['tmp_name'];
-        $fileName = $_FILES['uploadedFile']['name'];
-        $fileSize = $_FILES['uploadedFile']['size'];
-        $fileType = $_FILES['uploadedFile']['type'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
-        $newFileName = md5($fileName).'.'. $fileExtension; //sanitize the filename
-        $allowedfileExtensions = array('csv');
-        if (in_array($fileExtension, $allowedfileExtensions)) {
-            // directory in which the uploaded file will be moved
-            if (!file_exists(plugin_dir_path(__FILE__).'data/')) {
-                mkdir(plugin_dir_path(__FILE__).'data/', 0777, true);
-            }
-            $uploadFileDir = plugin_dir_path(__FILE__).'data/';
-            $dest_path = $uploadFileDir . $newFileName;
-            
-            if(move_uploaded_file($fileTmpPath, $dest_path))
-            {
-                echo 'CSV File is successfully uploaded.';
-                $input_data['org_image'] = $_POST['org_image'];
-                $input_data['bg_image'] = $_POST['bg_image'];
-                $input_data['sender_name'] = $_POST['sender_name'];
-                $input_data['sender_email'] = $_POST['sender_email'];
-                $input_data['general_font_size'] = $_POST['general_font_size'];
-                $input_data['attendee_font_size'] = $_POST['attendee_font_size'];
-                $input_data['event_title_font_size'] = $_POST['event_title_font_size'];
-                $input_data['email_body'] = htmlspecialchars(str_replace('\\"', '"', $_POST['email_body']));
-                do_action(read_data($dest_path,$input_data));
-                exit();
-            }
-            else
-            {
-                echo 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
-            }
-        }
-        else{
-            echo 'Unsupported file. Please try again.';
-            exit();
-        }
-    }
+if ( isset( $_POST['uploadBtn'] ) && $_POST['uploadBtn'] == 'Upload & Send Emails' ) {
+	if ( isset( $_FILES['uploadedFile'] ) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK ) {
+		// get details of the uploaded file
+		$fileTmpPath           = $_FILES['uploadedFile']['tmp_name'];
+		$fileName              = $_FILES['uploadedFile']['name'];
+		$fileSize              = $_FILES['uploadedFile']['size'];
+		$fileType              = $_FILES['uploadedFile']['type'];
+		$fileNameCmps          = explode( '.', $fileName );
+		$fileExtension         = strtolower( end( $fileNameCmps ) );
+		$newFileName           = md5( $fileName ) . '.' . $fileExtension; // sanitize the filename
+		$allowedfileExtensions = array( 'csv' );
+		if ( in_array( $fileExtension, $allowedfileExtensions ) ) {
+			// directory in which the uploaded file will be moved
+			if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'data/' ) ) {
+				mkdir( plugin_dir_path( __FILE__ ) . 'data/', 0777, true );
+			}
+			$uploadFileDir = plugin_dir_path( __FILE__ ) . 'data/';
+			$dest_path     = $uploadFileDir . $newFileName;
+
+			if ( move_uploaded_file( $fileTmpPath, $dest_path ) ) {
+				echo 'CSV File is successfully uploaded.';
+				$input_data['org_image']             = $_POST['org_image'];
+				$input_data['bg_image']              = $_POST['bg_image'];
+				$input_data['sender_name']           = $_POST['sender_name'];
+				$input_data['sender_email']          = $_POST['sender_email'];
+				$input_data['start_sub_line']        = $_POST['start_sub_line'];
+				$input_data['second_sub_line']       = $_POST['second_sub_line'];
+				$input_data['general_font_size']     = $_POST['general_font_size'];
+				$input_data['attendee_font_size']    = $_POST['attendee_font_size'];
+				$input_data['event_title_font_size'] = $_POST['event_title_font_size'];
+				$input_data['email_body']            = htmlspecialchars( str_replace( '\\"', '"', $_POST['email_body'] ) );
+				do_action( read_data( $dest_path, $input_data ) );
+				exit();
+			} else {
+				echo 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
+			}
+		} else {
+			echo 'Unsupported file. Please try again.';
+			exit();
+		}
+	}
 }
